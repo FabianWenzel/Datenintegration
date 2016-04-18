@@ -47,7 +47,7 @@ var stream = fs.createReadStream("Liste_PPN-ExNr_HSHN-libre.csv");
 // Setting the headers option will cause change each row to an object rather than an array.
 
 var csvStream = csv({
-{headers : true,
+{headers : true, 
     ignoreEmpty: true,
     trim: true
 })
