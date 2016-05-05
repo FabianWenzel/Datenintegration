@@ -24,8 +24,6 @@ var twitterFeeds = [
 var client = new Twitter({
 });
 
-
-
 for(var i = 0; i < twitterFeeds.length; i++) {
 
     // Twitter
@@ -37,16 +35,18 @@ for(var i = 0; i < twitterFeeds.length; i++) {
             for (var i = 0; i < tweets.length; i++) {
                 var tweet = tweets[i];
                 console.log(tweet.text);
+                console.log("-------------")
             }
         }
     });
 
     // RSS Feed
+    var arr = [];
     var rssLink = rssFeeds[i];
     console.log("start crawling: " + rssLink);
     var rssContent = crawlFeed(rssLink);
+    //console.log(rssContent);
     var title = "";
-    var textall = "";
 
 
     var xmlContent = xml2js.parseString(rssContent, function (err, result) {
@@ -57,17 +57,10 @@ for(var i = 0; i < twitterFeeds.length; i++) {
             }
             for (var j = 0; j < result.rss.channel[x].item.length && j < 10; j++) {
                 var item = result.rss.channel[0].item[j];
-              //  console.log(item.title[0].trim());
-               // console.log(item.description[0].trim();
-               // var lol = item.title[0].trim();
-
-               // lol += (item.title[0].trim()) + item.description[0].trim();
-               title += item.title[0].trim() + "\n";
-
                 console.log(item.title[0].trim() +"\n" + "\n");
-
-
-
+               // console.log(item.description[0].trim();
+               title += item.title[0].trim() + "\n";
+               arr.push(rssContent);
             }
 
         }
@@ -78,21 +71,8 @@ for(var i = 0; i < twitterFeeds.length; i++) {
 
         console.log('Done');
     });
-
-   // textall =+ lol;
-
-
 }
 console.log(title);
-
-// fs.writeFile("\loll.txt", title, function(err) {
-//     if(err) {
-//         return console.log(err);
-//     }
-
-//     console.log("The file was saved!");
-// });
-
 
 stream.once('open', function(fd) {
   stream.write(title+"\n");
@@ -106,12 +86,10 @@ function crawlFeed(link) {
     return res.body.toString('utf-8');
 }
 
-
 	var net = require('net');
-
 	var client = net.connect(1011, 'localhost');
- 		client.write(title);
-      client.end();
+ 	client.write(arr.toString());
+    client.end();
 
 
 
